@@ -7,6 +7,14 @@ const dateInput = document.getElementById("dateInput");
 const timeInput = document.getElementById("timeInput");
 const dateError = document.getElementById("dateError");
 
+const EMAILJS_PUBLIC_KEY = "QSgQ5PSdClV6k8_ex";
+const EMAILJS_SERVICE_ID = "service_ct52wd6";
+const EMAILJS_TEMPLATE_ID = "template_mbeu8w3";
+
+emailjs.init({
+  publicKey: EMAILJS_PUBLIC_KEY
+});
+
 function showScreen(index) {
   screens[current].classList.remove("active");
   current = index;
@@ -16,15 +24,19 @@ function showScreen(index) {
 
 function hearts(amount = 18) {
   const box = document.getElementById("hearts");
+
   for (let i = 0; i < amount; i++) {
     const h = document.createElement("div");
+
     h.className = "floating-heart";
     h.textContent = Math.random() > .35 ? "♥" : "♡";
     h.style.left = Math.random() * 100 + "%";
     h.style.fontSize = (14 + Math.random() * 22) + "px";
     h.style.animationDelay = (Math.random() * .8) + "s";
     h.style.animationDuration = (2.3 + Math.random() * 1.8) + "s";
+
     box.appendChild(h);
+
     setTimeout(() => h.remove(), 5000);
   }
 }
@@ -38,6 +50,7 @@ let noMoves = 0;
 
 function moveNoButton() {
   noMoves++;
+
   const card = document.querySelector(".question-card");
   const maxX = Math.max(0, card.clientWidth - 180);
   const maxY = Math.max(0, card.clientHeight - 110);
@@ -46,7 +59,8 @@ function moveNoButton() {
   noBtn.style.right = "auto";
   noBtn.style.top = Math.random() * maxY + "px";
   noBtn.style.bottom = "auto";
-  noBtn.style.transform = `rotate(${(-8 + Math.random() * 16)}deg)`;
+  noBtn.style.transform =
+    `rotate(${(-8 + Math.random() * 16)}deg)`;
 
   if (noMoves >= 4) {
     noBtn.style.transform += " scale(.8)";
@@ -54,6 +68,7 @@ function moveNoButton() {
 }
 
 noBtn.addEventListener("mouseenter", moveNoButton);
+
 noBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
   moveNoButton();
@@ -71,15 +86,20 @@ document.getElementById("yes2").addEventListener("click", () => {
 
 function setMinDate() {
   const now = new Date();
-  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-    .toISOString().split("T")[0];
+
+  const local = new Date(
+    now.getTime() - now.getTimezoneOffset() * 60000
+  ).toISOString().split("T")[0];
+
   dateInput.min = local;
 }
+
 setMinDate();
 
 document.getElementById("dateNext").addEventListener("click", () => {
   if (!dateInput.value || !timeInput.value) {
-    dateError.textContent = "Выбери и дату, и время — я же должен знать, когда за тобой ехать ❤️";
+    dateError.textContent =
+      "Выбери и дату, и время — я же должен знать, когда за тобой ехать ❤️";
     return;
   }
 
@@ -101,8 +121,11 @@ document.querySelectorAll(".choice").forEach(btn => {
   });
 });
 
-document.getElementById("foodNext").addEventListener("click", () => {
-  const d = new Date(dateInput.value + "T" + timeInput.value);
+document.getElementById("foodNext").addEventListener("click", async () => {
+
+  const d = new Date(
+    dateInput.value + "T" + timeInput.value
+  );
 
   const dateText = d.toLocaleDateString("ru-RU", {
     day: "2-digit",
@@ -110,21 +133,59 @@ document.getElementById("foodNext").addEventListener("click", () => {
     year: "numeric"
   });
 
+  const foodText = selectedFood.length
+    ? selectedFood.join(", ")
+    : "Сюрприз для тебя 😉";
+
   document.getElementById("finalDate").textContent = dateText;
   document.getElementById("finalTime").textContent = timeInput.value;
-  document.getElementById("finalFood").textContent =
-    selectedFood.length ? selectedFood.join(", ") : "Сюрприз для тебя 😉";
+  document.getElementById("finalFood").textContent = foodText;
 
-  hearts(45);
-  showScreen(5);
+  const button = document.getElementById("foodNext");
+
+  button.disabled = true;
+  button.textContent = "Отправляю... ❤️";
+
+  try {
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        date: dateText,
+        time: timeInput.value,
+        food: foodText
+      }
+    );
+
+    hearts(45);
+    showScreen(5);
+
+  } catch (error) {
+    console.error("Ошибка EmailJS:", error);
+
+    alert(
+      "Не получилось отправить ответ 😢\n\n" +
+      "Проверь настройки EmailJS."
+    );
+
+  } finally {
+    button.disabled = false;
+    button.textContent = "Вот это я запомнил ❤️";
+  }
 });
 
 document.getElementById("restart").addEventListener("click", () => {
   selectedFood = [];
-  document.querySelectorAll(".choice").forEach(x => x.classList.remove("selected"));
+
+  document
+    .querySelectorAll(".choice")
+    .forEach(x => x.classList.remove("selected"));
+
   dateInput.value = "";
   timeInput.value = "";
+
   noMoves = 0;
   noBtn.removeAttribute("style");
+
   showScreen(0);
 });
