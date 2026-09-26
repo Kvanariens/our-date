@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff0f5" />
+  <title>Для тебя ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient"></div>
+  <main class="app">
+
+    <!-- 1. START -->
+    <section class="screen active" id="screen1">
+      <div class="screen-content intro">
+        <p class="eyebrow">у меня для тебя кое-что есть</p>
+        <button class="photo-button" id="startPhoto" aria-label="Открыть">
+          <img src="start.jpg" alt="Небольшая фотография" />
+          <span class="tap-hint">нажми на фото ✨</span>
+        </button>
+        <p class="tiny">только не листай слишком быстро :)</p>
+      </div>
+    </section>
+
+    <!-- 2. QUESTION -->
+    <section class="screen" id="screen2">
+      <div class="screen-content">
+        <div class="question-card">
+          <img class="question-image" src="question.png" alt="Хочешь сходить со мной на свидание?" />
+          <button class="ghost-zone yes-zone" id="yes1" aria-label="Да"></button>
+          <button class="ghost-zone no-zone" id="no1" aria-label="Нет"></button>
+        </div>
+        <p class="under-note">P.S. вариант «нет» сегодня почему-то плохо работает 😌</p>
+      </div>
+    </section>
+
+    <!-- 3. SURPRISE -->
+    <section class="screen" id="screen3">
+      <div class="screen-content center">
+        <div class="sparkle">✨</div>
+        <h1>Подожди…<br>ты действительно сказала <span>«да»?</span></h1>
+        <p>Я почему-то думал, ты скажешь «нет»… хаха 😏</p>
+        <button class="main-btn" id="yes2">Да да ДА ❤️</button>
+      </div>
+    </section>
+
+    <!-- 4. DATE/TIME -->
+    <section class="screen" id="screen4">
+      <div class="screen-content form-screen">
+        <div class="top-icon">♡</div>
+        <p class="eyebrow">теперь самое важное</p>
+        <h2>Итак, когда ты свободна?</h2>
+        <p class="subtitle">Выбери удобные для тебя дату и время.<br>Остальное я беру на себя.</p>
+
+        <div class="inputs">
+          <label>
+            <span>Дата</span>
+            <input type="date" id="dateInput" />
+          </label>
+          <label>
+            <span>Время</span>
+            <input type="time" id="timeInput" />
+          </label>
+        </div>
+
+        <button class="main-btn" id="dateNext">Выбери дату →</button>
+        <p class="error" id="dateError"></p>
+      </div>
+    </section>
+
+    <!-- 5. FOOD -->
+    <section class="screen" id="screen5">
+      <div class="screen-content form-screen">
+        <p class="eyebrow">маленький вопрос</p>
+        <h2>Что ты хочешь?</h2>
+        <p class="subtitle">Можно выбрать несколько вариантов. Я запомню 😉</p>
+
+        <div class="choices" id="choices">
+          <button class="choice" data-choice="🍕 Пицца"><span>🍕</span>Пицца</button>
+          <button class="choice" data-choice="🍔 Бургер"><span>🍔</span>Бургер</button>
+          <button class="choice" data-choice="🍣 Суши"><span>🍣</span>Суши</button>
+          <button class="choice" data-choice="🍷 Вино"><span>🍷</span>Вино</button>
+          <button class="choice" data-choice="🎂 Торт"><span>🎂</span>Торт</button>
+          <button class="choice" data-choice="🥩 Шашлык"><span>🥩</span>Шашлык</button>
+        </div>
+
+        <button class="main-btn" id="foodNext">Вот это я запомнил ❤️</button>
+      </div>
+    </section>
+
+    <!-- 6. FINAL -->
+    <section class="screen" id="screen6">
+      <div class="screen-content final-screen">
+        <div class="final-photo">
+          <div class="mini-polaroid p1">❤️</div>
+          <div class="mini-polaroid p2">✨</div>
+          <div class="heart-big">♥</div>
+        </div>
+
+        <p class="eyebrow">договорились</p>
+        <h1>Рад, что ты<br><span>не отказалась ❤️</span></h1>
+        <p class="final-text">Будь готова к этому времени.<br><strong>Я приеду.</strong></p>
+
+        <div class="summary">
+          <div><span>📅</span><b id="finalDate">—</b></div>
+          <div><span>🕐</span><b id="finalTime">—</b></div>
+          <div><span>🍴</span><b id="finalFood">—</b></div>
+        </div>
+
+        <button class="main-btn secondary" id="restart">Начать сначала ↺</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="hearts"></div>
+  <script src="script.js"></script>
+</body>
+</html>
